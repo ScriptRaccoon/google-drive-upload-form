@@ -1,0 +1,96 @@
+<script>
+
+  var maxFails = 5;
+  var fails = 0;
+  
+  var uploadForm = document.getElementById("uploadForm");
+  var loginForm = document.getElementById("loginForm");
+  var passwordInput = document.getElementById("passwordInput");
+  var uploadButton = document.getElementById("uploadButton");
+  var infoDiv = document.getElementById("infoDiv");
+  var nameInput = document.getElementById("nameInput");
+  var concertInput = document.getElementById("concertInput");
+  var dateInput = document.getElementById("dateInput");
+  var photosInput = document.getElementById("photosInput");
+  
+  function LoginClick() {
+    loginButton.value = "Login...";
+    google.script.run.withSuccessHandler(loginCheck).checkPassword(passwordInput.value);
+  }
+
+  function loginCheck(passwordsAreEqual) {
+    if (passwordsAreEqual) {
+      fails = 0;
+      writeInfo("");
+      uploadForm.style.display = "block";
+      loginForm.style.display = "none";
+      uploadButton.disabled = false;
+    }
+    else {
+      fails++;
+      if (fails < maxFails) {
+        writeInfo("Das Passwort ist falsch.");
+        loginButton.value = "Login";
+      }
+      else {
+        writeInfo("Du hast das Passwort zu oft falsch eingegeben! Das Formular wird nun gesperrt.");
+        loginForm.disabled = true;
+        loginForm.style.display = "none";
+      }  
+    }  
+  }
+  
+  function initiateUpload() {
+  
+    writeInfo("");
+    
+    var name = nameInput.value;
+    var concert = concertInput.value;
+    var date = dateInput.value; 
+    var photos = photosInput.files;
+    
+    var dateFormat = /^\d{2}\.\d{2}\.\d{4}$/g;
+    
+    if (name == "" || concert == "" || date == "") {
+      writeInfo("Bitte fülle alle Felder aus.");
+    }
+    else if (dateFormat.test(date) == false) {
+      writeInfo("Das Datum hat das falsche Format. Richtig wäre zum Beispiel 20.05.2021.");
+    }
+    else if (photos.length == 0) {
+      writeInfo("Bitte wähle ein Foto aus.");
+    }
+    else {
+      writeInfo("Der Upload wird vorbereitet.");
+      nameInput.disabled = true;
+      concertInput.disabled = true;
+      dateInput.disabled = true;
+      photosInput.disabled = true;
+      uploadButton.disabled = true;
+      google.script.run.withSuccessHandler(uploadFile).withUserObject([photos,0]).createSubFolder(name, concert, date);
+    }
+  }
+  
+  function uploadFile(subfolderId, [photos,n]) {
+    if (n == photos.length) {
+      writeInfo("Alle Fotos wurden hochgeladen. Vielen Dank!");
+      google.script.run.sendInfoMail(nameInput.value, photos.length);
+    }
+    else {
+      writeInfo("Datei " + (n+1).toString() + " wird hochgeladen...");
+      var file = photos[n];
+      var fileName = file.name;
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        google.script.run.withSuccessHandler(uploadFile).withUserObject([photos,n+1]).uploadFileToDrive(subfolderId, reader.result, fileName);
+      }
+      reader.readAsDataURL(file);
+    }
+  }  
+   
+
+  function writeInfo(text) {
+    infoDiv.innerHTML = text;
+  }  
+
+</script>
