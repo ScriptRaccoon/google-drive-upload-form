@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset= "UTF-8">
+    <?!= include("css"); ?>
+  </head>
+  <body>
+  
+  <h2>
+    Konzertfotographie Baez
+  </h2>
+  
+  <div id = "imageDiv">
+    <img src="https://cdn.pastemagazine.com/www/articles/2018/07/27/joan-baez-joe-sia.jpg">
+  </div>  
+  
+  <form id = "loginForm" style = "display:block">
+    <div class = "smallmargin">
+      <input type = "password" id = "passwordInput" placeholder = "Passwort...">
+    </div>
+    <div>
+      <input type = "button" id = "loginButton" value = "Login" onclick = "LoginClick()">
+    </div>
+  </form> 
+  
+  <form id = "uploadForm" style  = "display: none">
+    <div class = "smallmargin">
+      Hier kannst du deine Fotos hochladen.
+    </div>
+    <div>
+      <input type = "text" id = "nameInput" placeholder = "Dein Name...">
+    </div>  
+    <div>
+      <input type = "text" id = "concertInput" placeholder = "Name des Konzerts...">
+    </div>
+    <div>
+      <input type = "text" id = "dateInput" placeholder = "Datum des Konzerts...">
+    </div>
+    <div>
+      <input type = "file" id = "photosInput" accept = "image/*" multiple >
+    </div>
+    <div>
+      <input type = "button" id = "uploadButton" value = "Hochladen!" onclick = "initiateUpload()" disabled = true>
+    </div>    
+      
+      
+    
+  </form> 
+  
+  <div id = "infoDiv" class = "smallmargin" id = "infoDiv">
+  </div>
+  
+  <?!= include("js"); ?>
+    
+  </body>
+</html>
