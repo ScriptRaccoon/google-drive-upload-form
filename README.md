@@ -12,6 +12,10 @@ In order to use this form, create new script in your Google Drive (https://scrip
 
 For demonstration purposes, the form here is from a fictional concert photography agency, enabling photographers to upload their photos. They have to input their name, the name and the date of the concert. Multiple images files can be selected and uploaded. During the upload, it is shown which file is currently processed, and also when all files have been uploaded.
 
+![Form](docs/scr1.png)
+
 The script creates a subfolder (whose name consists of the mentioned inputs above) in a prescribed Google Drive folder (add its ID in code.gs) with the uploades images in it. The script also sends an e-mail (add the e-mail in code.gs) to inform about this upload.
+
+![Form](docs/scr2.png)
 
 Notice that this script is based on the script "Work Collector" by Doug Saunders ([Link](https://script.google.com/d/1x3p9ZAv-SafEK06r_Vr7fVuUNtEfBg1SGhmSYWjQ0kuPTk-y55a7Nink/edit)). Among other things, I have added the password protection and the feature to upload multiple files.
